@@ -1,0 +1,3 @@
+[submodule "contrib/aidl"]
+	path = contrib/aidl
+	url = https://android.googlesource.com/platform/system/tools/aidl
