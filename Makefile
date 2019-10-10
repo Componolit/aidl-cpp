@@ -7,9 +7,6 @@ vpath %.cpp contrib/aidl
 vpath %.cpp contrib/core/base
 vpath %.cpp out/generated
 
-AIDL_OBJECTS += aidl_language_y.o
-AIDL_OBJECTS += aidl_language_l.o
-
 AIDL_OBJECTS += ast_cpp.o
 AIDL_OBJECTS += ast_java.o
 AIDL_OBJECTS += aidl.o
@@ -26,6 +23,9 @@ AIDL_OBJECTS += options.o
 AIDL_OBJECTS += type_namespace.o
 AIDL_OBJECTS += type_cpp.o
 AIDL_OBJECTS += type_java.o
+
+AIDL_OBJECTS += aidl_language_y.o
+AIDL_OBJECTS += aidl_language_l.o
 
 BASE_OBJECTS += logging.o
 BASE_OBJECTS += threads.o
@@ -55,11 +55,13 @@ out/obj/%.o: out/generated/%.cpp
 
 out/generated/%.h out/generated/%.cpp: %.yy
 	@echo BISON $@
-	$(VERBOSE)bison -Dapi.pure -Lc++ --defines=out/generated/$*.h -o $@ $<
+	$(VERBOSE)bison -Dapi.pure -Lc++ --defines=out/generated/$*.h -o out/generated/$*.cpp $<
 
 out/generated/%.cpp: %.ll
 	@echo FLEX $@
 	$(VERBOSE)flex -o $@ $<
+
+contrib/aidl/aidl_language.cpp: out/generated/aidl_language_y.h
 
 clean:
 	rm -rf out aidl-cpp
